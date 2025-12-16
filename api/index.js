@@ -1,10 +1,11 @@
-// api/index.js - VERZE POUŽÍVAJÍCÍ SYNTAXI require() (CommonJS)
+// api/index.js - NEJROBUSTNĚJŠÍ VERZE PRO KOMPATIBILITU S VERCEL A NODE.JS
 
-const { GoogleGenAI } = require('@google/genai'); // Změna importu
-const express = require('express');               // Změna importu
-const cors = require('cors');                     // Změna importu
+// Nastavení require pro GoogleGenAI:
+const GoogleGenAI = require('@google/genai').GoogleGenAI; // ZMĚNA: Přistupujeme přímo ke třídě
+const express = require('express');
+const cors = require('cors');
 
-// Zde se klíč načte bezpečně z proměnné prostředí Vercelu
+// Zde se klíč načte bezpečně
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY }); 
 const app = express();
 
@@ -16,7 +17,7 @@ app.get('/', (req, res) => {
     res.status(200).send('Proxy je online a funguje!');
 });
 
-// Hlavní endpoint pro volání Gemini
+// Hlavní endpoint
 app.post('/', async (req, res) => {
     const prompt = req.body.prompt;
     if (!prompt) {
@@ -32,9 +33,9 @@ app.post('/', async (req, res) => {
 
     } catch (error) {
         console.error('Chyba při volání Gemini API:', error);
+        // Tady je nejpravděpodobnější chyba kvůli špatnému API klíči (401)
         res.status(500).json({ error: 'Chyba při zpracování AI požadavku.' });
     }
 });
 
-// Pro Vercel exportujeme Express aplikaci s module.exports
-module.exports = app; // Změna exportu
+module.exports = app;

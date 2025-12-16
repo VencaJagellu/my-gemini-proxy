@@ -1,11 +1,12 @@
-// api/index.js - VERZE POUŽÍVAJÍCÍ POJMENOVANÝ EXPORT (Většinou funguje na Vercelu)
+// api/index.js - FINALIZOVANÁ VERZE S OPRAVENÝM IMPORTEM
 
-import { GoogleGenAI } from '@google/genai'; // ZMĚNA ZDE!
+import * as genai from '@google/genai'; // Importujeme celý modul jako 'genai'
 import express from 'express';
 import cors from 'cors';
 
-// Inicializace třídy - POUŽÍVÁ JMENO PŘÍMO Z IMPORTU
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY }); 
+// Zde se klíč načte bezpečně z proměnné prostředí Vercelu
+// Třídu GoogleGenAI získáme ze základního importu
+const ai = new genai.GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY }); 
 const app = express();
 
 app.use(cors()); 

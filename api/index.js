@@ -1,4 +1,4 @@
-import GoogleGenAI from '@google/genai';
+import * as GoogleGenAI from '@google/genai';
 import express from 'express';
 import cors from 'cors';
 

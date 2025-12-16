@@ -1,12 +1,20 @@
-import * as GoogleGenAI from '@google/genai';
+// api/index.js - VERZE POUŽÍVAJÍCÍ POJMENOVANÝ EXPORT (Většinou funguje na Vercelu)
+
+import { GoogleGenAI } from '@google/genai'; // ZMĚNA ZDE!
 import express from 'express';
 import cors from 'cors';
 
-// Zde se klíč načte bezpečně z proměnné prostředí Vercelu
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+// Inicializace třídy - POUŽÍVÁ JMENO PŘÍMO Z IMPORTU
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY }); 
 const app = express();
-app.use(cors()); 
+
+app.use(cors()); 
 app.use(express.json());
+
+// Testovací GET
+app.get('/', (req, res) => {
+    res.status(200).send('Proxy je online a funguje!');
+});
 
 // Hlavní endpoint pro volání Gemini
 app.post('/', async (req, res) => {
@@ -16,13 +24,10 @@ app.post('/', async (req, res) => {
     }
 
     try {
-        // Volání Gemini API
         const response = await ai.models.generateContent({
             model: 'gemini-2.5-flash',
             contents: prompt,
         });
-
-        // Odeslání odpovědi zpět
         res.json({ text: response.text });
 
     } catch (error) {
@@ -31,5 +36,4 @@ app.post('/', async (req, res) => {
     }
 });
 
-// Pro Vercel exportujeme Express aplikaci
 export default app;

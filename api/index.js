@@ -1,15 +1,14 @@
-// api/index.js - FINALIZOVANÁ VERZE S OPRAVENÝM IMPORTEM
+// api/index.js - VERZE POUŽÍVAJÍCÍ SYNTAXI require() (CommonJS)
 
-import * as genai from '@google/genai'; // Importujeme celý modul jako 'genai'
-import express from 'express';
-import cors from 'cors';
+const { GoogleGenAI } = require('@google/genai'); // Změna importu
+const express = require('express');               // Změna importu
+const cors = require('cors');                     // Změna importu
 
 // Zde se klíč načte bezpečně z proměnné prostředí Vercelu
-// Třídu GoogleGenAI získáme ze základního importu
-const ai = new genai.GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY }); 
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY }); 
 const app = express();
 
-app.use(cors()); 
+app.use(cors());
 app.use(express.json());
 
 // Testovací GET
@@ -37,4 +36,5 @@ app.post('/', async (req, res) => {
     }
 });
 
-export default app;
+// Pro Vercel exportujeme Express aplikaci s module.exports
+module.exports = app; // Změna exportu

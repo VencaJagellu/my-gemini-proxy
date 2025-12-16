@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 // Hlavní endpoint pro volání Gemini
-app.post('/gemini', async (req, res) => {
+app.post('/', async (req, res) => {
     const prompt = req.body.prompt;
     if (!prompt) {
         return res.status(400).send({ error: 'Chybí dotaz (prompt) v těle požadavku.' });
